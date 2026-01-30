@@ -133,7 +133,7 @@
               color: #009999;
             }
  
-            .funcsynopsis {
+            .funcsynopsis, .xref {
               color: #090;
             }
  
@@ -3496,14 +3496,14 @@
                                 <p>
                                     <a id="idm140495663765152" class="indexterm"></a>
                                     The type
-                                    <span class="type">XID</span>
+                                    <span id="def-XID" class="type">XID</span>
                                     is used for generic resource IDs.
                                 </p>
                             </li>
                             <li class="listitem">
                                 <p>
                                     <a id="idm140495663763024" class="indexterm"></a>
-                                    The type <span class="type">XPointer</span> is defined to be <span class="type">char *</span>
+                                    The type <span id="def-XPointer" class="type">XPointer</span> is defined to be <span class="type">char *</span>
                                     and is used as a generic opaque pointer to data.
                                 </p>
                             </li>
@@ -4122,7 +4122,7 @@ dual-headed:0.1
                         If successful,
                         <a class="xref" href="#XOpenDisplay"><code class="function">XOpenDisplay</code></a>
                         returns a pointer to a
-                        <span class="type">Display</span>
+                        <span id="def-Display" class="type">Display</span>
                         structure,
                         which is defined in
                         <code class="filename">&lt;X11/Xlib.h&gt;</code>.
@@ -5464,7 +5464,7 @@ dual-headed:0.1
                         <p>
                             <a id="idm140495656701920" class="indexterm"></a>
                             The
-                            <span class="structname">XPixmapFormatValues</span>
+                            <span id="def-XPixmapFormatValues" class="structname">XPixmapFormatValues</span>
                             structure provides an interface to the pixmap format information
                             that is returned at the time of a connection setup.
                             It contains:
@@ -46892,7 +46892,7 @@ typedef struct {
                         <span class="symbol">XNVaNestedList</span>
                         is specified in place of an argument name,
                         then the following value is interpreted as an
-                        <span class="type">XVaNestedList</span>
+                        <span id="def-XVaNestedList" class="type">XVaNestedList</span>
                         value that specifies a list of values logically inserted into the
                         original list at the point of declaration.
                         A NULL identifies the end of a nested list.
@@ -47073,7 +47073,7 @@ typedef struct {
                         <p>
                             The abstraction used to communicate with an output method
                             is an opaque data structure represented by the
-                            <span class="type">XOM</span>
+                            <span id="def-XOM" class="type">XOM</span>
                             data type.
                             The abstraction for representing the state of a particular output thread
                             is called an <span class="emphasis"><em>output context</em></span>.
@@ -47687,7 +47687,7 @@ typedef enum {
                             There can be multiple output contexts for one output method.
                             The programming interfaces for creating, reading, or modifying
                             an output context use a variable argument list.
-                            The name elements of the argument lists are referred to as <acronym class="acronym">XOC</acronym> values.
+                            The name elements of the argument lists are referred to as <acronym id="def-XOC" class="acronym">XOC</acronym> values.
                             It is intended that output methods be controlled by these <acronym class="acronym">XOC</acronym> values.
                             As new <acronym class="acronym">XOC</acronym> values are created,
                             they should be registered with the X Consortium.
@@ -48481,7 +48481,7 @@ typedef struct {
                             Fonts are loaded according to a list of base font names 
                             supplied by the client and the charsets required by the locale.
                             The
-                            <span class="type">XFontSet</span>
+                            <span id="def-XFontSet" class="type">XFontSet</span>
                             is an opaque type representing the state of a particular output thread
                             and is equivalent to the type
                             <span class="type">XOC</span>.
@@ -50764,7 +50764,7 @@ typedef struct {
                             <p>
                                 The abstraction used by a client to communicate with an input method
                                 is an opaque data structure represented by the
-                                <span class="type">XIM</span>
+                                <span id="def-XIM" class="type">XIM</span>
                                 data type.
                                 This data structure is returned by the
                                 <a class="xref" href="#XOpenIM"><code class="function">XOpenIM</code></a>
@@ -50816,7 +50816,7 @@ typedef struct {
                                 Different input contexts may be associated with the same input method,
                                 possibly with the same client window.
                                 An
-                                <span class="type">XIC</span>
+                                <span id="def-XIC" class="type">XIC</span>
                                 is created with the
                                 <a class="xref" href="#XCreateIC"><code class="function">XCreateIC</code></a>
                                 function, providing an
@@ -62451,7 +62451,7 @@ Xmh.Paned.Box.Command.Foreground     <span class="emphasis"><em>(class)</em></sp
                         Simple comparisons can be performed rather than string comparisons.
                         The shorthand name for a string is called a quark and is the
                         type
-                        <span class="type">XrmQuark</span>.
+                        <span id="def-XrmQuark" class="type">XrmQuark</span>.
                         On some occasions,
                         you may want to allocate a quark that has no string equivalent.
                     </p>
@@ -62763,7 +62763,7 @@ bindings:     loose     tight     loose
                     <p>
                         <a id="idm140495643031488" class="indexterm"></a>
                         A resource database is an opaque type,
-                        <span class="type">XrmDatabase</span>.
+                        <span id="def-XrmDatabase" class="type">XrmDatabase</span>.
                         Each database value is stored in an
                         <span class="type">XrmValue</span>
                         structure.
@@ -65454,7 +65454,7 @@ static XrmOptionDescRec opTable[] = {
                     <p>
                         If present (non-NULL),
                         the
-                        <span class="structname">XComposeStatus</span>
+                        <span id="def-XComposeStatus" class="structname">XComposeStatus</span>
                         structure records the state,
                         which is private to Xlib,
                         that needs preservation across calls to
@@ -65462,7 +65462,7 @@ static XrmOptionDescRec opTable[] = {
                         to implement compose processing.
                         The creation of
                         <span class="structname">XComposeStatus</span>
-                        structures is implementation-dependent;
+                        structures is <em>implementation-dependent</em>;
                         a portable program must pass NULL for this argument.
                     </p>
                     <p>
@@ -68803,6 +68803,13 @@ bitmap = XCreateBitmapFromData(display, window, gray_bits, gray_width, gray_heig
                         <a id="idm140495636229248" class="indexterm"></a>
                         <a id="idm140495636227472" class="indexterm"></a>
                     </p>
+                    </p><pre class="literallayout">
+typedef int XContext;    
+    
+#define XUniqueContext()       ((XContext) XrmUniqueQuark())    
+#define XStringToContext(string)   ((XContext) XrmStringToQuark(string))    
+</pre>
+                    <p>
                     <p>
                         To save a data value that corresponds to a resource ID and context type, use
                         <a class="xref" href="#XSaveContext"><code class="function">XSaveContext</code></a>.
@@ -72719,7 +72726,7 @@ typedef struct _XExtData {
                         </p>
                         <p>
                         </p><pre class="synopsis">
-union {	Display *display;
+typedef union {	Display *display;
 	GC gc;
 	Visual *visual;
 	Screen *screen;
@@ -76264,7 +76271,7 @@ VertexEndClosed    0x0010     /* else not */
                             (see <a class="link" href="#Using_the_Context_Manager" title="Using the Context Manager">section 16.10</a>).
                             It is often necessary to associate arbitrary information with resource IDs.
                             Xlib provides the
-                            <code class="function">XAssocTable</code>
+                            <code id="def-XAssocTable" class="function">XAssocTable</code>
                             functions that you can use to make such an association.
                             <a id="idm140495635057024" class="indexterm"></a>
                             <a id="idm140495635056192" class="indexterm"></a>
