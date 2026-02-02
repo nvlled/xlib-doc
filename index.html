@@ -59,6 +59,10 @@
  
               display: flex;
             }
+
+            .funcsynopsis {
+                position: relative;
+            }
  
             summary {
               font-weight: bold;
@@ -181,6 +185,23 @@
              * An Article has no preface and no chapters. It has sections, appendices,
              * a glossary, an index and a bibliography.
              */
+
+            div.chapter>div.titlepage {
+                position: sticky;
+                top: 0;
+                background: white;
+                border-bottom: 1px solid gray;
+                margin: 0;
+                padding: 0;
+            }
+
+            div.chapter h1,
+            div.chapter h2,
+            div.chapter h3 {
+                margin: 0;
+                padding: 0;
+            }
+
  
             /*
              * Selection: book main title and subtitle
