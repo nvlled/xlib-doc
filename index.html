@@ -88,6 +88,18 @@
                 overflow-y: scroll;
                 width: 500px;
             }
+            .sidebar-end{
+                /* This is to fix some finicky browser behaviour
+                   that happens when an anchor linked is clicked
+                   and there is not enough space to place the
+                   target element at the top, causing
+                   the view to jerk upwards a bit.
+                   As much as I hate that useless whitespace,
+                   that unpredictable movement really throws
+                   me off.
+                */
+                height: 90vh;
+            }
             .sidebar li {
                 margin-left: 5px;
             }
@@ -116,8 +128,16 @@
             .sidebar details a:hover {
                 text-decoration: underline;
             }
+            .sidebar li a:target {
+                color: white;
+                background: blue;
+            }
 
-            .hidden { display: none }
+            .highlight { background: red }
+            li.highlight a {
+                color: white;
+                background: red;
+            }
 
             @media (max-width: 1000px) {
                 .sidebar { display: none; }
@@ -2478,8 +2498,11 @@
                 </ol>
                 <div class="nav"><a class="go-top" href="#symbol-list">^ top</a></div>
             </details>
-        </div>
+
         <!--sidebar -->
+            <div class="sidebar-end"></div>
+        </div>
+
         <div xml:lang="en" class="book" title="Xlib - C Language X Interface" lang="en">
             <div class="titlepage">
                 <div>
@@ -80149,6 +80172,14 @@ VertexEndClosed    0x0010     /* else not */
             </div>
         </div>
         <script>
+            function throttle(fn, ms) {
+                let timerID = null;
+                return function(...args) {
+                    clearTimeout(timerID);
+                    timerID = setTimeout(fn.bind(null, ...args) , ms);
+                }
+            }
+
             function addSearchForm(tocSection) {
                 const search = document.createElement("form");
                 search.classList.add("search");
@@ -80174,13 +80205,16 @@ VertexEndClosed    0x0010     /* else not */
                 //    console.log("submitted", e);
                 //};
 
-                searchButton.onclick = e => {
-                    e.preventDefault();
+                let firstMatch = null;
+
+                function highlight() {
+                    firstMatch = null;
+
                     const term = input.value.trim();
                     const entries = tocSection.querySelectorAll("li");
                     if (term.length == 0) {
                         for (const item of entries) {
-                            item.classList.remove("hidden");
+                            item.classList.remove("highlight");
                         }
                         return;
                     }
@@ -80188,19 +80222,34 @@ VertexEndClosed    0x0010     /* else not */
                     const pattern = new RegExp(RegExp.escape(term), "i");
                     for (const item of entries) {
                         if (pattern.test(item.textContent)) {
-                            item.classList.remove("hidden");
+                            item.classList.add("highlight");
+                            if (!firstMatch) firstMatch = item;
                         } else {
-                            item.classList.add("hidden");
+                            item.classList.remove("highlight");
                         }
+                    }
+                }
+
+                input.onkeypress = throttle(e => {
+                    e.preventDefault();
+                    highlight();
+                }, 512);
+
+                searchButton.onclick = e => {
+                    e.preventDefault();
+                    highlight();
+                    if (firstMatch) {
+                        firstMatch.scrollIntoView();
                     }
                 }
                 clearButton.onclick = e => {
                     e.preventDefault();
                     input.value = "";
+                    firstMatch = null;
 
                     const entries = tocSection.querySelectorAll("li");
                     for (const item of entries) {
-                        item.classList.remove("hidden");
+                        item.classList.remove("highlight");
                     }
                 }
             }
