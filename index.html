@@ -1,6 +1,5 @@
-<!--?xml version="1.0" encoding="UTF-8"?-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
         <link rel="canonical" href="/releases/current/doc/libX11/libX11/libX11.html">
         <link rel="home" href="https://www.x.org/">
@@ -70,7 +69,7 @@
             .toc { display: none; }
  
             .book {
-                max-width: 1000px;
+                max-width: 900px;
                 margin: 10px 15px;
             }
  
@@ -94,9 +93,23 @@
             .sidebar h4 {
                 margin: 5px 0px;
             }
- 
- 
-            @media (max-width: 1280px) {
+
+            .sidebar .nav {
+                margin-bottom: 10px;
+                position: fixed;
+                bottom: 0;
+                left: 20px;
+            }
+            .sidebar .nav .go-top {
+                background: gray;
+                padding: 5px 10px;
+                text-decoration: none;
+                color: black;
+            }
+
+            .hidden { display: none }
+
+            @media (max-width: 1000px) {
                 .sidebar { display: none; }
                 .toc { display: block; }
                 .book { max-width: unset; }
@@ -398,7 +411,7 @@
     </head>
     <body>
         <div class="sidebar">
-            <details name="toc-section">
+            <details name="toc-section" id="table-of-contents">
                 <summary>Table of Contents</summary>
                 <dl>
                     <dt><span class="preface"><a href="#acknowledgments">Acknowledgments</a></span></dt>
@@ -916,8 +929,9 @@
                         <dt>A.2. <a href="#idm140495638038288">Xlib functions which use each Protocol Request</a></dt>
                     </dl>
                 </div>
+                <div class="nav"><a class="go-top" href="#table-of-contents">^ top</a></div>
             </details>
-            <details name="toc-section" open>
+            <details name="toc-section" id="categorized-function-list">
                 <summary>Functions by Category</summary>
                 <ol>
                     <h4>Display Functions</h4>
@@ -1484,8 +1498,9 @@
                     <li><a href="#XDeleteContext">XDeleteContext</a></li>
                     <li><a href="#XUniqueContext">XUniqueContext</a></li>
                 </ol>
+                <div class="nav"><a class="go-top" href="#categorized-function-list">^ top</a></div>
             </details>
-            <details name="toc-section">
+            <details name="toc-section" id="sorted-function-list">
                 <summary>Functions by Alphabetical Order</summary>
                 <ol>
                     <li><a href="#XActivateScreenSaver">XActivateScreenSaver</a></li>
@@ -2012,8 +2027,9 @@
                     <li><a href="#XwcTextPerCharExtents">XwcTextPerCharExtents</a></li>
                     <li><a href="#XwcTextPropertyToTextList">XwcTextPropertyToTextList</a></li>
                 </ol>
+                <div class="nav"><a class="go-top" href="#sorted-function-list">^ top</a></div>
             </details>
-            <details name="toc-section">
+            <details name="toc-section" id="typedef-list">
                 <summary>Typedefs</summary>
                 <ol>
                     <li><a href="#def-Vertex">Vertex</a></li>
@@ -2158,8 +2174,9 @@
                     <li><a href="#def-XWindowChanges">XWindowChanges</a></li>
                     <li><a href="#def-XWMHints">XWMHints</a></li>
                 </ol>
+                <div class="nav"><a class="go-top" href="#typedef-list">^ top</a></div>
             </details>
-            <details name="toc-section">
+            <details name="toc-section" id="symbol-list">
                 <summary>Symbols</summary>
                 <ol>
                     <li><a href="#def-XWMHints">AllHints</a></li>
@@ -2428,6 +2445,7 @@
                     <li><a href="#def-XContext">XStringToContext</a></li>
                     <li><a href="#def-XContext">XUniqueContext</a></li>
                 </ol>
+                <div class="nav"><a class="go-top" href="#symbol-list">^ top</a></div>
             </details>
         </div>
         <!--sidebar -->
@@ -80099,5 +80117,67 @@ VertexEndClosed    0x0010     /* else not */
                 </div>
             </div>
         </div>
+        <script>
+            function addSearchForm(tocSection) {
+                const search = document.createElement("form");
+                search.classList.add("search");
+                search.innerHTML = `
+                <input>
+                <button name="search">search</button>
+                <button name="clear">clear</button>
+                `;
+                tocSection.prepend(search);
+
+                const input = search.querySelector("input");
+                const searchButton = search.querySelector("button[name=search]");
+                const clearButton = search.querySelector("button[name=clear]");
+
+                // Weird behvaiour:
+                // When pressing enter on <input>
+                // the first button's handler in the form gets called.
+                // Not really what I expected, and I only discovered this now.
+                // Not sure if this is a bug, or if it has always been that way?
+                // In any case, I'll just used the button handler directly.
+                //search.onsubmit = e => {
+                //    e.preventDefault();
+                //    console.log("submitted", e);
+                //};
+
+                searchButton.onclick = e => {
+                    e.preventDefault();
+                    const term = input.value.trim();
+                    const entries = tocSection.querySelectorAll("li");
+                    if (term.length == 0) {
+                        for (const item of entries) {
+                            item.classList.remove("hidden");
+                        }
+                        return;
+                    }
+
+                    const pattern = new RegExp(RegExp.escape(term), "i");
+                    for (const item of entries) {
+                        if (pattern.test(item.textContent)) {
+                            item.classList.remove("hidden");
+                        } else {
+                            item.classList.add("hidden");
+                        }
+                    }
+                }
+                clearButton.onclick = e => {
+                    e.preventDefault();
+                    input.value = "";
+
+                    const entries = tocSection.querySelectorAll("li");
+                    for (const item of entries) {
+                        item.classList.remove("hidden");
+                    }
+                }
+            }
+
+            addSearchForm(document.querySelector("#categorized-function-list"));
+            addSearchForm(document.querySelector("#sorted-function-list"));
+            addSearchForm(document.querySelector("#typedef-list"));
+            addSearchForm(document.querySelector("#symbol-list"));
+        </script>
     </body>
 </html>
